@@ -2,6 +2,6 @@ package readme
 
 main = README
 
-depends = spidr
+depends = learn
 
 opts = "--total"

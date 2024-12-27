@@ -2,6 +2,6 @@ package dependently-typed-tensors
 
 main = DependentlyTypedTensors
 
-depends = spidr
+depends = learn
 
 opts = "--total"

@@ -13,25 +13,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --}
-module TestRunner
+||| For internal learn use only.
+module Compiler.Xla.HLO.Builder.Lib.Arithmetic
 
-import Data.SOP
-import Hedgehog
+import Compiler.FFI
+import Compiler.Xla.HLO.Builder.XlaBuilder
+import Compiler.Xla.XlaData
 
-import Device
-
-import TestUtils
-import Utils.TestComparison
-import Unit.TestTensor
-import Unit.TestLiteral
-import Unit.TestUtil
+%foreign (libxla "ArgMax")
+prim__argMax : GCAnyPtr -> Int -> Int -> PrimIO AnyPtr
 
 export
-run : Device -> IO ()
-run device = test [
-      Utils.TestComparison.group
-    , TestUtils.group
-    , Unit.TestUtil.group
-    , Unit.TestLiteral.group
-    , Unit.TestTensor.group
-  ]
+argMax : (HasIO io, Primitive outputType) => XlaOp -> Nat -> io XlaOp
+argMax (MkXlaOp input) axis = do
+  opPtr <- primIO $ prim__argMax input (xlaIdentifier {dtype = outputType}) (cast axis)
+  opPtr <- onCollectAny opPtr XlaOp.delete
+  pure (MkXlaOp opPtr)

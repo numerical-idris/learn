@@ -1,14 +1,14 @@
-# spidr
+# learn
 
 _Accelerated machine learning with dependent types_
 
-spidr is a research project, expect breaking changes. We have yet to implement automatic differentiation and gradient-based optimizers.
+learn is a research project, expect breaking changes. We have yet to implement automatic differentiation and gradient-based optimizers.
 
-See the [online reference](https://joelberkeley.github.io/spidr/) for API documentation, and the [tutorials](tutorials/README.md) for extended discussion of spidr's architecture. In particular, make sure to read [_Nuisances in the Tensor API_](tutorials/Nuisances.md).
+See the [online reference](https://numerical-idris.github.io/learn/) for API documentation, and the [tutorials](tutorials/README.md) for extended discussion of learn's architecture. In particular, make sure to read [_Nuisances in the Tensor API_](tutorials/Nuisances.md).
 
 ### Install
 
-Installation requires curl and [pack](https://github.com/stefan-hoeck/idris2-pack). To install spidr, install a PJRT plugin. A plugin executes a spidr program, and determines what hardware your program will run on. You can install the CPU plugin, on Linux or Mac with Apple silicon, with
+Installation requires curl and [pack](https://github.com/stefan-hoeck/idris2-pack). To install learn, install a PJRT plugin. A plugin executes a learn program, and determines what hardware your program will run on. You can install the CPU plugin, on Linux or Mac with Apple silicon, with
 ```
 pack install pjrt-plugin-xla-cpu
 ```
@@ -16,13 +16,13 @@ or read the [plugin documentation](pjrt-plugins/README.md) for the CUDA-enabled 
 
 ### Motivation
 
-We made spidr to try out modern programming language capabilities in machine learning systems. To this end, we chose [Idris](https://github.com/idris-lang/Idris2) for the API; Idris is a general-purpose purely functional programming language with a particularly expressive type system. We also wanted to build something performant enough for working machine learning practitioners. Implementing efficient low-level linear algebra is not one of the project goals, so we opted to use [OpenXLA](https://openxla.org/)'s PJRT, an abstract interface for machine learning compilers for hardware accelerators.
+We made learn to try out modern programming language capabilities in machine learning systems. To this end, we chose [Idris](https://github.com/idris-lang/Idris2) for the API; Idris is a general-purpose purely functional programming language with a particularly expressive type system. We also wanted to build something performant enough for working machine learning practitioners. Implementing efficient low-level linear algebra is not one of the project goals, so we opted to use [OpenXLA](https://openxla.org/)'s PJRT, an abstract interface for machine learning compilers for hardware accelerators.
 
-### What can spidr do?
+### What can learn do?
 
 #### Catch errors before runtime
 
-If your spidr program compiles, and your hardware can run it, then it will run. This is primarily because Idris checks tensor shapes during compilation. For example, this will compile
+If your learn program compiles, and your hardware can run it, then it will run. This is primarily because Idris checks tensor shapes during compilation. For example, this will compile
 <!-- idris
 import Tensor
 -->
@@ -44,11 +44,11 @@ because you can't add a vector of length two to a vector of length three. Shape 
 append : Tensor [m, p] F64 -> Tensor [n, p] F64 -> Tensor [m + n, p] F64
 append x y = concat 0 x y
 ```
-As a bonus, spidr programs are reproducible. Any one graph will always produce the same result when run on the same hardware.
+As a bonus, learn programs are reproducible. Any one graph will always produce the same result when run on the same hardware.
 
 #### Execute on hardware accelerators
 
-You can run spidr programs on any hardware for which there's a PJRT plugin. CPU and CUDA plugins are provided out of the box. You can also create your own plugins with minimal code, see [the guide](pjrt-plugins/README.md) for instructions. The libraries required to build a plugin exist for ROCm-enabled GPUs, specialised machine learning accelerators, and more.
+You can run learn programs on any hardware for which there's a PJRT plugin. CPU and CUDA plugins are provided out of the box. You can also create your own plugins with minimal code, see [the guide](pjrt-plugins/README.md) for instructions. The libraries required to build a plugin exist for ROCm-enabled GPUs, specialised machine learning accelerators, and more.
 
 #### Optimize graph compilation
 
@@ -56,7 +56,7 @@ Each PJRT plugin contains a graph compiler, and there are several compilers avai
 
 #### Graph generation
 
-This is a high-priority feature but is not yet implemented. spidr can generate new tensor graphs from existing ones. We plan to use this to implement vectorization and automatic differentiation, like JAX's [`vmap`](https://jax.readthedocs.io/en/latest/automatic-vectorization.html) and [`grad`](https://jax.readthedocs.io/en/latest/automatic-differentiation.html).
+This is a high-priority feature but is not yet implemented. learn can generate new tensor graphs from existing ones. We plan to use this to implement vectorization and automatic differentiation, like JAX's [`vmap`](https://jax.readthedocs.io/en/latest/automatic-vectorization.html) and [`grad`](https://jax.readthedocs.io/en/latest/automatic-differentiation.html).
 
 ### Acknowledgements
 

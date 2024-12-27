@@ -15,11 +15,11 @@ limitations under the License.
 -->
 # Dependently-Typed Tensors
 
-In this tutorial, we look at how spidr uses dependent types to provide a well-defined tensor API.
+In this tutorial, we look at how learn uses dependent types to provide a well-defined tensor API.
 
 ## What are dependent types?
 
-Let's explore an example of dependent types relevant to spidr (for a more general introduction to dependent types, we recommend this [talk](https://www.youtube.com/watch?v=mOtKD7ml0NU), this [tutorial](https://github.com/stefan-hoeck/idris2-tutorial) and this [book](https://www.manning.com/books/type-driven-development-with-idris)). A `List Int` is a list of integers. These are representable in any language from C++ to Swift. It's not a dependent type, and it can have any size
+Let's explore an example of dependent types relevant to learn (for a more general introduction to dependent types, we recommend this [talk](https://www.youtube.com/watch?v=mOtKD7ml0NU), this [tutorial](https://github.com/stefan-hoeck/idris2-tutorial) and this [book](https://www.manning.com/books/type-driven-development-with-idris)). A `List Int` is a list of integers. These are representable in any language from C++ to Swift. It's not a dependent type, and it can have any size
 <!-- idris
 import Data.Vect
 -->
@@ -58,7 +58,7 @@ We could define a function that transposes matrices such as this, where the shap
 ```idris
 transpose : Vect m (Vect n Int) -> Vect n (Vect m Int)
 ```
-`transpose zs` will give us a `Vect 3 (Vect 2 Int)`. It's precisely this kind of extra precision that we use throughout spidr when working with tensors.
+`transpose zs` will give us a `Vect 3 (Vect 2 Int)`. It's precisely this kind of extra precision that we use throughout learn when working with tensors.
 
 <!-- idris
 main : IO ()

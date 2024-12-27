@@ -1,7 +1,7 @@
-[custom.all.spidr]
+[custom.all.learn]
 type = "local"
 path = ""
-ipkg = "spidr/spidr.ipkg"
+ipkg = "learn/learn.ipkg"
 
 [custom.all.runner]
 type = "local"

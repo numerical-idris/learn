@@ -17,7 +17,7 @@ limitations under the License.
 
 ## Efficiently reusing tensors with `tag`
 
-Tensor calculations are not automatically reused in spidr. For example, in
+Tensor calculations are not automatically reused in learn. For example, in
 <!-- idris
 import Tensor
 -->
@@ -25,7 +25,7 @@ import Tensor
 y : Tensor [] S32
 y = let x = 1 + 2 in x + x
 ```
-spidr will interpret each `x` as a different expression, and create two copies of `1 + 2`. This is acceptable for small calculations, but it would be a big problem if `x` were expensive to evaluate, or used a lot of space in memory. To prevent recalculating expressions, spidr provides _observable sharing_ via the interface
+learn will interpret each `x` as a different expression, and create two copies of `1 + 2`. This is acceptable for small calculations, but it would be a big problem if `x` were expensive to evaluate, or used a lot of space in memory. To prevent recalculating expressions, learn provides _observable sharing_ via the interface
 > ```idris
 > interface Taggable a where
 >   tag : Monad m => a -> TagT m a
@@ -37,7 +37,7 @@ y' = do
   x <- tag $ 1 + 2
   pure $ x + x 
 ```
-where we've used spidr's convenience alias `Tag = TagT Identity`.
+where we've used learn's convenience alias `Tag = TagT Identity`.
 
 > *__DETAIL__* Some machine learning compilers, including XLA, will eliminate common subexpressions, so using `tag` might not always make a difference. However, eliminating these subexpressions itself requires compute, and even then the compiler might not catch all of them, so we don't recommend relying on this.
 

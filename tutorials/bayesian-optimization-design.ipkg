@@ -1,7 +1,0 @@
-package bayesian-optimization-design
-
-main = BayesianOptimizationDesign
-
-depends = spidr
-
-opts = "--total"
