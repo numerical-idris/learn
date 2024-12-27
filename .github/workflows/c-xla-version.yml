@@ -12,6 +12,6 @@ jobs:
     - name: Check backend version is updated when necessary
       run: |
         sh -c "
-        (git diff --quiet HEAD^ XLA_VERSION && git diff --quiet HEAD^ spidr/backend/**) || \
-          ! git diff --quiet HEAD^ spidr/backend/VERSION
+        (git diff --quiet HEAD^ XLA_VERSION && git diff --quiet HEAD^ learn/backend/**) || \
+          ! git diff --quiet HEAD^ learn/backend/VERSION
         "

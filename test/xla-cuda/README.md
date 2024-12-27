@@ -1,4 +1,4 @@
-# spidr tests with XLA CUDA plugin
+# learn tests with XLA CUDA plugin
 
 Build the image from the repository root with
 ```bash

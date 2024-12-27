@@ -35,7 +35,7 @@ jobs:
       run: |
         rm -rf /opt/hostedtoolcache
         docker run \
-          -v $(pwd):/spidr -w /spidr \
+          -v $(pwd):/learn -w /learn \
           tensorflow/build:latest-python3.9 \
           sh -c "pjrt-plugins/xla-cpu/build.sh"
     - name: Publish XLA CPU plugin
@@ -72,7 +72,7 @@ jobs:
       run: |
         rm -rf /opt/hostedtoolcache
         docker run \
-          -v $(pwd):/spidr -w /spidr \
+          -v $(pwd):/learn -w /learn \
           tensorflow/build:latest-python3.9 \
           sh -c "pjrt-plugins/xla-cuda/build.sh"
     - name: Publish XLA CUDA plugin

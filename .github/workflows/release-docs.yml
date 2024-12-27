@@ -17,8 +17,8 @@ jobs:
       run: |
         apt-get update && apt-get install -y curl
         pack switch HEAD
-        pack --no-prompt --with-docs install spidr
-        mv spidr/build/docs .
+        pack --no-prompt --with-docs install learn
+        mv learn/build/docs .
     - name: Upload docs
       run: |
         git config --global --add safe.directory "$GITHUB_WORKSPACE"

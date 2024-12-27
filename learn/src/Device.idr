@@ -1,5 +1,5 @@
 {--
-Copyright 2022 Joel Berkeley
+Copyright 2024 Joel Berkeley
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -13,25 +13,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --}
-module TestRunner
+||| Defines `Device`, an abstraction for logical (as opposed to physical) runtime devices.
+module Device
 
-import Data.SOP
-import Hedgehog
+import Compiler.Xla.PJRT.C.PjrtCApi
 
-import Device
-
-import TestUtils
-import Utils.TestComparison
-import Unit.TestTensor
-import Unit.TestLiteral
-import Unit.TestUtil
-
-export
-run : Device -> IO ()
-run device = test [
-      Utils.TestComparison.group
-    , TestUtils.group
-    , Unit.TestUtil.group
-    , Unit.TestLiteral.group
-    , Unit.TestTensor.group
-  ]
+||| A PJRT "device". These are required to run learn graphs, and are provided by your plugin.
+||| You won't need to construct one yourself unless you're writing a plugin.
+public export
+data Device = MkDevice PjrtApi PjrtClient

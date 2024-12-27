@@ -14,9 +14,9 @@ To install with Nvidia Docker, first install [Docker](https://www.docker.com/), 
 ```
 docker run -it                          \
     --gpus all                          \
-    --name spidr                        \
-    -v $(pwd):/spidr                    \
-    -w /spidr                           \
+    --name learn                        \
+    -v $(pwd):/learn                    \
+    -w /learn                           \
     nvcr.io/nvidia/tensorrt:23.11-py3   \
     bash
 ```

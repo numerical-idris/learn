@@ -1,6 +1,6 @@
 #!/bin/sh -e
 
-if [ "$SPIDR_INSTALL_SUPPORT_LIBS" = false ]; then exit 0; fi
+if [ "$learn_INSTALL_SUPPORT_LIBS" = false ]; then exit 0; fi
 
 script_dir=$(CDPATH="" cd -- "$(dirname -- "$0")" && pwd)
 cd "$script_dir/../.."
@@ -18,5 +18,5 @@ case $os in
     ;;
 esac
 
-curl -fsL "https://github.com/joelberkeley/spidr/releases/download/xla-$(short_revision "$rev")/pjrt_plugin_xla_cuda-linux-x86_64.so" \
+curl -fsL "https://github.com/numerical-idris/learn/releases/download/xla-$(short_revision "$rev")/pjrt_plugin_xla_cuda-linux-x86_64.so" \
   -o pjrt_plugin_xla_cuda.so --create-dirs --output-dir "$(idris2 --libdir)/pjrt-plugin-xla-cuda-0.0.1/lib"
