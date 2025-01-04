@@ -204,7 +204,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tests-xla-cpu-linux-x86_64
-          path: test/xla-cpu/tests-xla-cpu.tar.gz
+          path: tests-xla-cpu.tar.gz
           if-no-files-found: error
   build-tests-xla-cpu-darwin-aarch64:
     runs-on: macos-14
@@ -246,7 +246,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tests-xla-cuda-linux-x86_64
-          path: test/xla-cuda/tests-xla-cuda.tar.gz
+          path: tests-xla-cuda.tar.gz
           if-no-files-found: error
   test-xla-cpu-linux-x86_64:
     needs:
