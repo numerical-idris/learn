@@ -198,7 +198,7 @@ jobs:
         run: |
           docker load --input /tmp/pack.tar
           docker run -v $(pwd):/spidr -w /spidr pack \
-            sh -c "SPIDR_INSTALL_SUPPORT_LIBS=false pack --no-prompt build xla-cpu.ipkg"
+            sh -c "SPIDR_INSTALL_SUPPORT_LIBS=false pack --no-prompt build test/xla-cpu/xla-cpu.ipkg"
           tar cfz tests-xla-cpu.tar.gz -C test/xla-cpu/build/exec .
       - name: Upload tests
         uses: actions/upload-artifact@v4
@@ -240,7 +240,7 @@ jobs:
         run: |
           docker load --input /tmp/pack.tar
           docker run -v $(pwd):/spidr -w /spidr pack \
-            sh -c "SPIDR_INSTALL_SUPPORT_LIBS=false pack --no-prompt build xla-cuda.ipkg"
+            sh -c "SPIDR_INSTALL_SUPPORT_LIBS=false pack --no-prompt build test/xla-cuda/xla-cuda.ipkg"
           tar cfz tests-xla-cuda.tar.gz -C test/xla-cuda/build/exec .
       - name: Upload tests
         uses: actions/upload-artifact@v4
