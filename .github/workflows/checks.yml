@@ -33,6 +33,21 @@ jobs:
         with:
           name: openxla-dev
           path: /tmp/openxla-dev.tar
+  build-pack-docker:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: docker/setup-buildx-action@v3
+      - name: Build and export
+        uses: docker/build-push-action@v6
+        with:
+          file: pack.Dockerfile
+          tags: pack
+          outputs: type=docker,dest=/tmp/pack.tar
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pack
+          path: /tmp/pack.tar
   pjrt-linux-x86_64:
     needs:
       - build-openxla-dev-docker
@@ -169,18 +184,22 @@ jobs:
           path: pjrt_plugin_xla_cuda.so
           if-no-files-found: error
   build-tests-xla-cpu-linux-x86_64:
+    needs:
+      - build-pack-docker
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - name: Install build dependencies
-        run: |
-          . ./.github/scripts/dev_gha.sh
-          install_pack
+      - name: Download pack Docker image
+        uses: actions/download-artifact@v4
+        with:
+          name: pack
+          path: /tmp
       - name: Build tests
-        working-directory: test/xla-cpu
         run: |
-          SPIDR_INSTALL_SUPPORT_LIBS=false ~/.pack/bin/pack --no-prompt build xla-cpu.ipkg
-          tar cfz tests-xla-cpu.tar.gz -C build/exec .
+          docker load --input /tmp/pack.tar
+          docker run -v $(pwd):/spidr -w /spidr pack \
+            sh -c "SPIDR_INSTALL_SUPPORT_LIBS=false pack --no-prompt build xla-cpu.ipkg"
+          tar cfz tests-xla-cpu.tar.gz -C test/xla-cpu/build/exec .
       - name: Upload tests
         uses: actions/upload-artifact@v4
         with:
@@ -207,18 +226,22 @@ jobs:
           path: test/xla-cpu/tests-xla-cpu.tar.gz
           if-no-files-found: error
   build-tests-xla-cuda-linux-x86_64:
+    needs:
+      - build-pack-docker
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - name: Install build dependencies
-        run: |
-          . ./.github/scripts/dev_gha.sh
-          install_pack
+      - name: Download pack Docker image
+        uses: actions/download-artifact@v4
+        with:
+          name: pack
+          path: /tmp
       - name: Build tests
-        working-directory: test/xla-cuda
         run: |
-          SPIDR_INSTALL_SUPPORT_LIBS=false ~/.pack/bin/pack --no-prompt build xla-cuda.ipkg
-          tar cfz tests-xla-cuda.tar.gz -C build/exec .
+          docker load --input /tmp/pack.tar
+          docker run -v $(pwd):/spidr -w /spidr pack \
+            sh -c "SPIDR_INSTALL_SUPPORT_LIBS=false pack --no-prompt build xla-cuda.ipkg"
+          tar cfz tests-xla-cuda.tar.gz -C test/xla-cuda/build/exec .
       - name: Upload tests
         uses: actions/upload-artifact@v4
         with:
@@ -302,21 +325,33 @@ jobs:
           docker load --input /tmp/xla-cuda.tar
           docker run -v $(pwd):/xla-cuda -w /xla-cuda xla-cuda sh -c "exit 0"  # needs a CUDA runner
   readme:
+    needs:
+      - build-pack-docker
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+      - name: Download pack Docker image
+        uses: actions/download-artifact@v4
+        with:
+          name: pack
+          path: /tmp
       - name: Type-check README
         run: |
-          . ./.github/scripts/dev_gha.sh
-          install_pack
-          SPIDR_INSTALL_SUPPORT_LIBS=false ~/.pack/bin/pack --no-prompt typecheck readme.ipkg
+          docker load --input /tmp/pack.tar
+          docker run -v $(pwd):/spidr -w /spidr pack \
+            sh -c "SPIDR_INSTALL_SUPPORT_LIBS=false pack --no-prompt typecheck readme.ipkg"
   tutorials:
+    needs:
+      - build-pack-docker
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+      - name: Download pack Docker image
+        uses: actions/download-artifact@v4
+        with:
+          name: pack
+          path: /tmp
       - name: Type-check tutorials
         run: |
-          . ./.github/scripts/dev_gha.sh
-          install_pack
-          export SPIDR_INSTALL_SUPPORT_LIBS=false
-          res=0; for f in tutorials/*.ipkg; do ~/.pack/bin/pack --no-prompt typecheck $f || res=$?; done; $(exit $res)
+          docker load --input /tmp/pack.tar
+          docker run -v $(pwd):/spidr -w /spidr pack sh -c "./tutorials/typecheck.sh"
